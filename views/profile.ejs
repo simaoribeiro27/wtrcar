@@ -1,0 +1,103 @@
+<% include partials/head %>
+
+  <body>
+    <div class="col-sm-8 col-sm-offset-2">
+
+      <div class="text-center">
+        <h2 class="fa fa-user"></h2>
+        <span>
+          <strong>User id</strong>:
+          <%= user._id ? user._id : '' %>
+        </span>
+        <% if (user.local.email != null) { %>
+          <strong>Email</strong>:
+          <%= user.local.email %>
+            <% } %>
+              <hr>
+              <label>Post a Travel</label>
+              <div class="col-sm-12 col-sm-offset-0">
+                <form action="/profile" method="post" accept-charset="utf-8">
+                  <input type="hidden" class="form-control.c1" name="idUser" value="<%= user._id %>" required/>
+                  <div class="form-row">
+
+                    <div class="form-group col-md-6">
+                      <label for="inputname">From</label>
+                      <input type="text" class="form-control" name="starting" value="Braga" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">To</label>
+                      <input type="text" class="form-control" name="arrival" value="Lisboa" required/>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputname">Latitude</label>
+                      <input type="text" class="form-control" name="lat" value="20.00" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Longitude</label>
+                      <input type="text" class="form-control" name="long" value="30.00" required/>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputname">Places</label>
+                      <input type="number" class="form-control" name="placesAvailable" value="5" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Busy places</label>
+                      <input type="number" class="form-control" name="busyPlaces" value="3" required/>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputname">Price</label>
+                      <input type="number" class="form-control" name="price" value="50" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Starting Data</label>
+                      <input type="date" class="form-control" name="startingData">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit travel</button>
+                </form>
+
+              </div>
+              <hr>
+              <label>List travels</label>
+              <p>The delete button only appears on your trips</p>
+              <div class="jumbotron text-left">
+                <ul>
+                  <h4>
+                    <% for(var i=0; i<travels.length; i++) {%>
+                      <li>
+                        From
+                        <%= travels[i].starting, %> to
+                          <%= travels[i].arrival %> | lat.
+                            <%= travels[i].lat %> * long.
+                              <%= travels[i].long %>
+                                | places
+                                <%= travels[i].placesAvailable %> - busy
+                                  <%= travels[i].busyPlaces %> | price
+                                    <%= travels[i].price %> | starting
+                                      <%= travels[i].startingData %>
+                                      <%if (user._id==travels[i].idUser) {%> | <h5 class="fa fa-user"></h5>  <%= user.local.email %>
+                                        <a class="glyphicon glyphicon-remove" href="/profile/delete/<%= travels[i]._id %>" title="Delete this travel item"></a>
+                                        <%}%>
+                                        <p></p>
+                             </li>
+                      <% } %>
+                </ul>
+                </h4>
+              </div>
+
+      </div>
+    </div>
+    <hr>
+  <span class="fa fa-sign-in"><a href="/">Sign out/<a></span>
+  </body>
+
+  </html>

@@ -1,0 +1,336 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Travel Car"
+host: "localhost:3000"
+basePath: "/"
+schemes:
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /travels:
+    get:
+      description: "Returns all travels from the system"
+      operation_id: "findtravels"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      - name: "idUser"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "travel response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/travel"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+    post:
+      description: "Creates a new travel in the store.  Duplicates are allowed"
+      operation_id: "addtravel"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "idUser"
+        description: "travel add to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/newtravel"
+      responses:
+        200:
+          description: "travel response"
+          schema:
+            $ref: "#/definitions/travel"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+  /travels/{_id}:
+    get:
+      description: "Returns a travel based on a single _id"
+      operation_id: "findtravelBy_id"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "_id"
+        in: "path"
+        description: "_id of travel to fetch"
+        required: true
+        type: "object"
+      responses:
+        200:
+          description: "travel response"
+          schema:
+            $ref: "#/definitions/travel"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+    delete:
+      description: "deletes a single travel based on the _id supplied"
+      operation_id: "deletetravel"
+      parameters:
+      - name: "_id"
+        in: "path"
+        description: "_id of travel to delete"
+        required: true
+        type: "object"
+      responses:
+        204:
+          description: "travel deleted"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+  /reservations:
+    get:
+      description: "Returns all reservations from the system"
+      operation_id: "findreservationstravels"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      - name: "name"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "reservation response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/reservation"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+    post:
+      description: "Creates a new reservation in the store.  Duplicates are allowed"
+      operation_id: "addreservation"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "name"
+        description: "reservation to add to the store"
+        required: true 
+        schema:
+          $ref: "#/definitions/newreservation"
+      responses:
+        200:
+          description: "reservation response"
+          schema:
+            $ref: "#/definitions/reservation"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+  /reservations/{_id}:
+    get:
+      description: "Returns a user based on a single _id"
+      operation_id: "findreservationBy_id"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "_id"
+        in: "path"
+        description: "_id of reservation to fetch"
+        required: true
+        type: "object"
+      responses:
+        200:
+          description: "reservationresponse"
+          schema:
+            $ref: "#/definitions/reservation"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+    delete:
+      description: "deletes a single reservation based on the _id supplied"
+      operation_id: "deletereservation"
+      parameters:
+      - name: "_id"
+        in: "path"
+        description: "_id of reservation to delete"
+        required: true
+        type: "object"
+      responses:
+        204:
+          description: "reservation deleted"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+  /users:
+    get:
+      description: "Returns all users from the system"
+      operation_id: "findusers"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      - name: "local.name"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/users"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+    post:
+      description: "Creates a new user in the store.  Duplicates are allowed"
+      operation_id: "addusers"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "local.name"
+        description: "user add"
+        required: true
+        schema:
+          $ref: "#/definitions/users"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/users"
+        default:
+          schema:
+            $ref: "#/definitions/errorModel"
+definitions:
+  travel:
+    type: "object"
+    required:
+    - "_id"
+    - "starting"
+    properties:
+      starting:
+        type: "string"
+      arrival:
+        type: "string"
+      lat:
+        type: "string"
+      long:
+        type: "string"
+      placesAvailable:
+        type: "integer"
+        format: "int64"
+      busyPlaces:
+        type: "integer"
+        format: "int64"
+      price:
+        type: "integer"
+        format: "int64"
+      startingData:
+        type: "string"
+  newtravel:
+    type: "object"
+    required:
+    - "starting"
+    properties:
+      starting:
+        type: "string"
+      arrival:
+        type: "string"
+      lat:
+        type: "string"
+      long:
+        type: "string"
+      placesAvailable:
+        type: "integer"
+        format: "int64"
+      busyPlaces:
+        type: "integer"
+        format: "int64"
+      price:
+        type: "integer"
+        format: "int64"
+      startingData:
+        type: "string"
+  reservation:
+    type: "object"
+    required:
+    - "_id"
+    - "idTravel"
+    - "name"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+      places:
+        type: "integer"
+        format: "int64"
+      startingData:
+        type: "string"
+      idUser:
+        type: "string"
+  newreservation:
+    type: "object"
+    required:
+    - "_id"
+    - "idTravel"
+    - "name"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+      places:
+        type: "integer"
+        format: "int64"
+      startingData:
+        type: "string"
+      idUser:
+        type: "string"
+  users:
+    type: "object"
+    required:
+    - "_id"
+    - "local.name"
+    properties:
+      local.email:
+        type: "string"
+      local.password:
+        type: "string"
+  errorModel:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
